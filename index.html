@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adidas Team Sentiment Tracker</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Oswald for headers, Inter for UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;700&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for Data Vis -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f5;
+            color: #000000;
+        }
+        
+        h1, h2, h3, .brand-font {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .mono-font {
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        /* Custom Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none; 
+            background: transparent; 
+        }
+        
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #000;
+            cursor: pointer;
+            margin-top: -6px; 
+            box-shadow: 0 0 0 4px rgba(0,0,0,0.1);
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #e5e7eb;
+            border-radius: 2px;
+        }
+
+        /* Animation for Pulse */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .alert-pulse {
+            animation: pulse-ring 2s infinite;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 flex justify-center min-h-screen">
+
+    <!-- Dashboard Container -->
+    <div class="w-full max-w-5xl bg-white shadow-xl rounded-xl overflow-hidden flex flex-col md:flex-row min-h-[600px]">
+        
+        <!-- MAIN CONTENT -->
+        <div class="flex-grow flex flex-col bg-gray-50">
+            
+            <!-- Header -->
+            <header class="bg-black border-b border-gray-800 px-6 py-5 flex justify-between items-center sticky top-0 z-20">
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight uppercase text-white">Employee Sentiment Tracker</h1>
+                </div>
+                <!-- Bell icon removed from here -->
+            </header>
+
+            <!-- Scrollable Content -->
+            <div class="p-6 overflow-y-auto h-full">
+                
+                <!-- TOP ROW: Key Metrics -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    
+                    <!-- Card 1: The "Vibe" (Overall Sentiment) -->
+                    <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-100 relative overflow-hidden group">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider">Store Mood</h3>
+                            <span class="bg-yellow-100 text-yellow-700 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Neutral</span>
+                        </div>
+                        <div class="flex items-baseline gap-2 mt-2">
+                            <span class="text-5xl font-bold brand-font text-gray-900">6.8</span>
+                            <span class="text-sm text-gray-400 font-medium">/ 10</span>
+                        </div>
+                        <div class="flex items-center gap-2 mt-4 text-xs font-medium text-red-500">
+                            <i class="fa-solid fa-arrow-trend-down"></i>
+                            <span>-0.4 vs last week</span>
+                        </div>
+                        <!-- Decorative visual -->
+                        <div class="absolute -right-6 -bottom-6 opacity-5 group-hover:opacity-10 transition-opacity">
+                             <i class="fa-solid fa-face-meh text-9xl"></i>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Burnout Risk -->
+                    <div class="bg-white p-5 rounded-lg shadow-sm border-l-4 border-red-500 relative">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider">Burnout Risk</h3>
+                            <div class="w-2 h-2 rounded-full bg-red-500 alert-pulse"></div>
+                        </div>
+                        <div class="mt-2">
+                            <p class="text-2xl font-bold brand-font text-red-600">HIGH</p>
+                            <p class="text-xs text-gray-500 mt-1 leading-snug">"Back of House" team is averaging <span class="font-bold text-gray-900">4+ hours OT</span> this week due to shipment volume.</p>
+                        </div>
+                        <button class="mt-4 text-xs font-bold underline decoration-2 underline-offset-4 text-black hover:text-gray-600">VIEW SCHEDULES</button>
+                    </div>
+
+                    <!-- Card 3: eNPS (Advocacy) -->
+                    <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-100">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider">eNPS Score</h3>
+                            <span class="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Good</span>
+                        </div>
+                        <div class="flex items-baseline gap-2 mt-2">
+                            <span class="text-5xl font-bold brand-font text-gray-900">+42</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-1.5 mt-4">
+                            <div class="bg-black h-1.5 rounded-full" style="width: 70%"></div>
+                        </div>
+                        <p class="text-[10px] text-gray-400 mt-2 text-right">Target: +40</p>
+                    </div>
+                </div>
+
+                <!-- MIDDLE ROW: Charts & Deep Dives -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                    
+                    <!-- Main Chart: Sentiment Trend -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 lg:col-span-2">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-lg font-bold brand-font uppercase">7-Day Morale Trend</h3>
+                            <select class="text-xs font-bold bg-gray-100 border-none rounded px-3 py-1 cursor-pointer outline-none">
+                                <option>All Departments</option>
+                                <option>Originals</option>
+                                <option>Performance</option>
+                                <option>Operations</option>
+                            </select>
+                        </div>
+                        <div class="relative h-64 w-full">
+                            <canvas id="sentimentChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Breakdown: Topic Sentiment -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex flex-col">
+                        <h3 class="text-lg font-bold brand-font uppercase mb-4">Topic Breakdown</h3>
+                        
+                        <div class="space-y-5 flex-grow">
+                            <!-- Topic 1 -->
+                            <div>
+                                <div class="flex justify-between text-xs font-bold mb-1">
+                                    <span>ROLE CLARITY</span>
+                                    <span class="text-green-600">88%</span>
+                                </div>
+                                <div class="w-full bg-gray-100 rounded-sm h-2">
+                                    <div class="bg-green-500 h-2 rounded-sm" style="width: 88%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Topic 2 -->
+                            <div>
+                                <div class="flex justify-between text-xs font-bold mb-1">
+                                    <span>MANAGER SUPPORT</span>
+                                    <span class="text-green-600">92%</span>
+                                </div>
+                                <div class="w-full bg-gray-100 rounded-sm h-2">
+                                    <div class="bg-green-500 h-2 rounded-sm" style="width: 92%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Topic 3 -->
+                            <div>
+                                <div class="flex justify-between text-xs font-bold mb-1">
+                                    <span>TOOLS & RESOURCES</span>
+                                    <span class="text-red-500">45%</span>
+                                </div>
+                                <div class="w-full bg-gray-100 rounded-sm h-2">
+                                    <div class="bg-red-500 h-2 rounded-sm" style="width: 45%"></div>
+                                </div>
+                                <p class="text-[10px] text-gray-400 mt-1 italic">"POS system lag is killing us..."</p>
+                            </div>
+
+                            <!-- Topic 4 -->
+                            <div>
+                                <div class="flex justify-between text-xs font-bold mb-1">
+                                    <span>SUSTAINABILITY KNOWLEDGE</span>
+                                    <span class="text-yellow-600">60%</span>
+                                </div>
+                                <div class="w-full bg-gray-100 rounded-sm h-2">
+                                    <div class="bg-yellow-500 h-2 rounded-sm" style="width: 60%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-gray-100">
+                             <h4 class="text-xs font-bold text-gray-400 mb-2">SUGGESTED ACTION</h4>
+                             <div class="bg-blue-50 p-3 rounded-md flex gap-3 items-start">
+                                 <i class="fa-solid fa-lightbulb text-blue-500 mt-0.5"></i>
+                                 <div>
+                                     <p class="text-xs font-bold text-blue-900">Run Tech Huddle</p>
+                                     <p class="text-[10px] text-blue-700 leading-tight">Team is frustrated with Tools. Acknowledge the POS lag and share IT Ticket #4492 status.</p>
+                                 </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart.js Logic -->
+    <script>
+        const ctx = document.getElementById('sentimentChart').getContext('2d');
+        
+        // Gradient for the line chart
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(0, 0, 0, 0.1)'); // Start color
+        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)'); // End color
+
+        const sentimentChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Team Morale',
+                    data: [7.2, 7.5, 7.8, 6.5, 6.2, 6.8, 6.8],
+                    borderColor: '#000000',
+                    backgroundColor: gradient,
+                    borderWidth: 2,
+                    pointBackgroundColor: '#000000',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    tension: 0.3, // Curve of the line
+                    fill: true
+                },
+                {
+                    label: 'Target',
+                    data: [8, 8, 8, 8, 8, 8, 8],
+                    borderColor: '#e5e7eb',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    pointRadius: 0,
+                    fill: false,
+                    tension: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#000',
+                        titleFont: { family: 'Oswald', size: 14 },
+                        bodyFont: { family: 'Inter', size: 12 },
+                        padding: 10,
+                        cornerRadius: 4,
+                        displayColors: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 4,
+                        max: 10,
+                        grid: {
+                            color: '#f3f4f6',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            font: { family: 'Roboto Mono', size: 10 },
+                            color: '#9ca3af'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: { family: 'Oswald', size: 12 },
+                            color: '#000'
+                        }
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+            }
+        });
+    </script>
+</body>
+</html>
