@@ -136,11 +136,11 @@
                     </div>
                 </div>
 
-                <!-- MIDDLE ROW: Charts & Deep Dives -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                <!-- MIDDLE ROW: Charts (Full Width) -->
+                <div class="mb-6">
                     
                     <!-- Main Chart: Sentiment Trend -->
-                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 lg:col-span-2">
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 w-full">
                         <div class="flex justify-between items-center mb-6">
                             <h3 class="text-lg font-bold brand-font uppercase">7-Day Morale Trend</h3>
                             <select class="text-xs font-bold bg-gray-100 border-none rounded px-3 py-1 cursor-pointer outline-none">
@@ -152,69 +152,6 @@
                         </div>
                         <div class="relative h-64 w-full">
                             <canvas id="sentimentChart"></canvas>
-                        </div>
-                    </div>
-
-                    <!-- Breakdown: Topic Sentiment -->
-                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex flex-col">
-                        <h3 class="text-lg font-bold brand-font uppercase mb-4">Topic Breakdown</h3>
-                        
-                        <div class="space-y-5 flex-grow">
-                            <!-- Topic 1 -->
-                            <div>
-                                <div class="flex justify-between text-xs font-bold mb-1">
-                                    <span>ROLE CLARITY</span>
-                                    <span class="text-green-600">88%</span>
-                                </div>
-                                <div class="w-full bg-gray-100 rounded-sm h-2">
-                                    <div class="bg-green-500 h-2 rounded-sm" style="width: 88%"></div>
-                                </div>
-                            </div>
-
-                            <!-- Topic 2 -->
-                            <div>
-                                <div class="flex justify-between text-xs font-bold mb-1">
-                                    <span>MANAGER SUPPORT</span>
-                                    <span class="text-green-600">92%</span>
-                                </div>
-                                <div class="w-full bg-gray-100 rounded-sm h-2">
-                                    <div class="bg-green-500 h-2 rounded-sm" style="width: 92%"></div>
-                                </div>
-                            </div>
-
-                            <!-- Topic 3 -->
-                            <div>
-                                <div class="flex justify-between text-xs font-bold mb-1">
-                                    <span>TOOLS & RESOURCES</span>
-                                    <span class="text-red-500">45%</span>
-                                </div>
-                                <div class="w-full bg-gray-100 rounded-sm h-2">
-                                    <div class="bg-red-500 h-2 rounded-sm" style="width: 45%"></div>
-                                </div>
-                                <p class="text-[10px] text-gray-400 mt-1 italic">"POS system lag is killing us..."</p>
-                            </div>
-
-                            <!-- Topic 4 -->
-                            <div>
-                                <div class="flex justify-between text-xs font-bold mb-1">
-                                    <span>SUSTAINABILITY KNOWLEDGE</span>
-                                    <span class="text-yellow-600">60%</span>
-                                </div>
-                                <div class="w-full bg-gray-100 rounded-sm h-2">
-                                    <div class="bg-yellow-500 h-2 rounded-sm" style="width: 60%"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mt-6 pt-4 border-t border-gray-100">
-                             <h4 class="text-xs font-bold text-gray-400 mb-2">SUGGESTED ACTION</h4>
-                             <div class="bg-blue-50 p-3 rounded-md flex gap-3 items-start">
-                                 <i class="fa-solid fa-lightbulb text-blue-500 mt-0.5"></i>
-                                 <div>
-                                     <p class="text-xs font-bold text-blue-900">Run Tech Huddle</p>
-                                     <p class="text-[10px] text-blue-700 leading-tight">Team is frustrated with Tools. Acknowledge the POS lag and share IT Ticket #4492 status.</p>
-                                 </div>
-                             </div>
                         </div>
                     </div>
                 </div>
